@@ -1,90 +1,224 @@
+```html
+<!-- home page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Angel</title>
-    <style>
-        body {
-            position: relative;
-            min-height: 100vh;
-            color: #fff;
-            background: #000000;
-            overflow: hidden; /* Keeping original behavior for now */
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="https://gavinoriley.github.io/assets/hamafavi.ico">
+<link rel="preload" href="/assets/PoiretOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+    @font-face {
+        font-family: 'Poiret';
+        src: url('/assets/PoiretOne-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
 
-        .navbar {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-            padding: 1rem;
-            box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.5);
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poiret', Arial, sans-serif;
+        cursor: url('https://gavinoriley.github.io/assets/sprCursor_3.png'), auto;
+    }
 
-        .navbar a {
-            color: white;
-            margin-left: 1rem;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
-        }
+    body {
+        position: relative;
+        min-height: 100vh;
+        color: #fff;
+        overflow: hidden;
+        background: #000000; /* pure black background */
+    }
 
-        .navbar a:hover {
-            text-decoration: underline;
-        }
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    }
 
-        .logo-container {
-            height: 90vh;
-            background-image: url('https://gavinorileyclub.github.io/assets/nobgclubangelweblogo.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-        }
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(0,0,255,0.5);
+        box-shadow: 0 0 8px rgba(0,0,255,0.8);
+    }
 
-        .top-text {
-            position: absolute;
-            top: 10%;
-            width: 100%;
-            text-align: center;
-            font-size: 1.8rem;
-            text-shadow: 1px 1px 2px black;
-        }
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        padding: 12px 0;
+        display: flex;
+        justify-content: center;
+        gap: 48px;
+        z-index: 100;
+    }
 
-        .bottom-text {
-            position: absolute;
-            bottom: 10%;
-            width: 100%;
-            text-align: center;
-            font-size: 1.8rem;
-            text-shadow: 1px 1px 2px black;
-        }
+    .navbar a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 26px;
+        text-shadow: 1px 1px 2px black;
+    }
 
-        @media screen and (max-width: 768px) {
-            .top-text,
-            .bottom-text {
-                font-size: 0.9rem;
+    .navbar a:hover { color: #ddd; }
+
+    .title-section {
+        position: relative;
+        width: 100%;
+        margin-top: 60px;
+        text-align: center;
+    }
+
+    .logo-container {
+        position: relative;
+        width: 100%;
+        height: 90vh;
+        background-image: url('https://gavinoriley.github.io/assets/nobgclubangelweblogo.png');
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .top-text,
+    .bottom-text {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        text-shadow: 1px 1px 2px black;
+        color: #fff;
+        font-size: 1.8rem;
+        text-align: center;
+        font-family: 'Poiret', Arial, sans-serif;
+    }
+
+    .top-text { top: 0; }
+    .bottom-text { bottom: 0; max-width: 90%; line-height: 1.2; }
+
+    .blue-light {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0;
+        height: 0;
+        z-index: -1; /* Place behind content but above background */
+        animation: bluePulse 10s infinite ease-in-out;
+    }
+
+    @keyframes bluePulse {
+        0% {
+            box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+        }
+        20% {
+            box-shadow: 0 0 400px 200px rgba(0, 0, 139, 1);
+        }
+        50% {
+            box-shadow: 0 0 400px 200px rgba(0, 0, 139, 1);
+        }
+        80% {
+            box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+        }
+        100% {
+            box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .navbar { justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 100%; overflow-x: auto; padding: 10px 0; }
+        .navbar a { font-size: 16px; }
+        .logo-container { height: 80vh; }
+        .top-text, .bottom-text { font-size: 0.9rem; }
+        .bottom-text { white-space: nowrap; bottom: 50px; }
+        .top-text { top: 50px; }
+        .blue-light {
+            animation: bluePulseMobile 12s infinite ease-in-out;
+        }
+        @keyframes bluePulseMobile {
+            0% {
+                box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+            }
+            20% {
+                box-shadow: 0 0 300px 150px rgba(0, 0, 139, 1);
+            }
+            50% {
+                box-shadow: 0 0 300px 150px rgba(0, 0, 139, 1);
+            }
+            80% {
+                box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+            }
+            100% {
+                box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
             }
         }
-    </style>
+    }
+</style>
 </head>
 <body>
+    <div class="particles"></div>
+    <div class="blue-light"></div>
 
     <nav class="navbar">
         <a href="about.html">ABOUT</a>
         <a href="https://hamachithepsychotickiller.com/supportCA/">SUPPORT</a>
     </nav>
 
-    <section class="title-section">
-        <div class="top-text">WELCOME TO</div>
-        <div class="logo-container"></div>
-        <div class="bottom-text">UNITING THE NEXT MUSIC MOVEMENT FOR OUTCASTS</div>
-    </section>
+    <main>
+        <section class="title-section">
+            <div class="logo-container">
+                <div class="top-text">WELCOME TO</div>
+                <div class="bottom-text">UNITING THE NEXT MUSIC MOVEMENT FOR OUTCASTS</div>
+            </div>
+        </section>
+    </main>
 
+    <script>
+        const particleContainer = document.querySelector('.particles');
+        const baseCount = 50;
+        const densityFactor = window.innerWidth / 10;
+        const particleCount = Math.floor(baseCount + densityFactor);
+
+        for (let i = 0; i < particleCount; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const isDesktop = window.innerWidth > 768;
+            const size = isDesktop ? Math.random() * 5 + 3 : Math.random() * 3 + 1; // Larger particles on desktop
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+
+            // Random horizontal start position
+            const startX = Math.random() * window.innerWidth;
+            p.style.left = startX + 'px';
+            p.style.top = window.innerHeight + 'px'; // start at bottom
+            p.style.opacity = Math.random() * 0.5 + 0.3;
+
+            // Animate particle from bottom to top
+            const endY = -50 - Math.random() * 100; // off-screen top
+            const duration = Math.random() * 5000 + 5000;
+
+            p.animate([
+                { transform: `translateY(0px)`, opacity: p.style.opacity },
+                { transform: `translateY(${endY - window.innerHeight}px)`, opacity: 0 }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                easing: 'linear',
+                delay: Math.random() * 3000
+            });
+
+            particleContainer.appendChild(p);
+        }
+    </script>
 </body>
 </html>
+```
