@@ -84,22 +84,25 @@
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
-    .top-text,
-    .bottom-text {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+    .top-text {
+        position: static;
+        transform: none;
+        left: auto;
         z-index: 10;
         text-shadow: 1px 1px 2px black;
         color: #fff;
         font-size: 1.8rem;
         text-align: center;
         font-family: 'Poiret', Arial, sans-serif;
+        margin-bottom: 20px;
     }
 
-    .top-text { top: 0; }
     .bottom-text { bottom: 0; max-width: 90%; line-height: 1.2; }
 
     .blue-light {
@@ -132,18 +135,6 @@
     }
 
     /* Gallery Styles */
-    .gallery-section {
-        position: relative;
-        width: 100%;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        z-index: 10;
-        overflow-y: auto; /* Allow scrolling if needed */
-        min-height: 100vh; /* Ensure it takes full height */
-    }
-
     .gallery-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -227,7 +218,7 @@
         .logo-container { height: 80vh; }
         .top-text, .bottom-text { font-size: 0.9rem; }
         .bottom-text { white-space: nowrap; bottom: 50px; }
-        .top-text { top: 50px; }
+        .top-text { margin-bottom: 10px; }
         .blue-light {
             animation: bluePulseMobile 12s infinite ease-in-out;
         }
@@ -274,13 +265,11 @@
         <section class="title-section">
             <div class="logo-container">
                 <div class="top-text">The Angels</div>
-            </div>
-        </section>
-        <section class="gallery-section">
-            <div class="gallery-grid" id="galleryGrid"></div>
-            <div class="pagination">
-                <button id="prevBtn">&larr;</button>
-                <button id="nextBtn">&rarr;</button>
+                <div class="gallery-grid" id="galleryGrid"></div>
+                <div class="pagination">
+                    <button id="prevBtn">&larr;</button>
+                    <button id="nextBtn">&rarr;</button>
+                </div>
             </div>
         </section>
     </main>
@@ -331,7 +320,7 @@
         // Gallery script
         const images = [];
         for (let i = 1; i <= 73; i++) {
-            images.push(`ang${i}.png`);
+            images.push(`/assets/ang${i}.png`);
         }
 
         const itemsPerPage = 20; // Chosen to balance load; 20 tiles per page to avoid lag on most devices
