@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="https://gavinoriley.github.io/assets/hamafavi.ico">
+<link rel="preload" href="/assets/PoiretOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+    @font-face {
+        font-family: 'Poiret';
+        src: url('/assets/PoiretOne-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poiret', Arial, sans-serif;
+        cursor: url(''), auto;
+    }
+
+    body {
+        position: relative;
+        min-height: 100vh;
+        color: #fff;
+        overflow: hidden;
+        background: #000000; /* pure black background */
+    }
+
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(0,0,255,0.5);
+        box-shadow: 0 0 8px rgba(0,0,255,0.8);
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        padding: 12px 0;
+        display: flex;
+        justify-content: center;
+        gap: 48px;
+        z-index: 100;
+    }
+
+    .navbar a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 26px;
+        text-shadow: 1px 1px 2px black;
+    }
+
+    .navbar a:hover { color: #ddd; }
+
+    .title-section {
+        position: relative;
+        width: 100%;
+        margin-top: 60px;
+        text-align: center;
+    }
+
+    .logo-container {
+        position: relative;
+        width: 100%;
+        height: 90vh;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .top-text,
+    .bottom-text {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        text-shadow: 1px 1px 2px black;
+        color: #fff;
+        font-size: 1.8rem;
+        text-align: center;
+        font-family: 'Poiret', Arial, sans-serif;
+    }
+
+    .top-text { top: 0; }
+    .bottom-text { bottom: 0; max-width: 90%; line-height: 1.2; }
+
+    .blue-light {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0;
+        height: 0;
+        z-index: -1; /* Place behind content but above background */
+        animation: bluePulse 10s infinite ease-in-out;
+    }
+
+    @keyframes bluePulse {
+        0% {
+            box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+        }
+        20% {
+            box-shadow: 0 0 400px 200px rgba(0, 0, 139, 1);
+        }
+        50% {
+            box-shadow: 0 0 400px 200px rgba(0, 0, 139, 1);
+        }
+        80% {
+            box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+        }
+        100% {
+            box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+        }
+    }
+
+    /* Gallery Styles */
+    .gallery-section {
+        position: relative;
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 10;
+        overflow-y: auto; /* Allow scrolling if needed */
+        min-height: 100vh; /* Ensure it takes full height */
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        max-width: 1200px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .gallery-tile {
+        width: 100%;
+        padding-top: 100%; /* Square aspect ratio */
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .gallery-tile img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Crop to square */
+        loading: lazy; /* Lazy load to improve performance */
+    }
+
+    .gallery-tile:hover {
+        box-shadow: 0 0 10px 5px rgba(0, 0, 139, 0.8); /* Dark blue glow */
+    }
+
+    /* Modal for full screen image */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        z-index: 200;
+    }
+
+    .modal img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .pagination button {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px black;
+    }
+
+    .pagination button:hover {
+        color: #ddd;
+    }
+
+    .pagination button:disabled {
+        color: #555;
+        cursor: not-allowed;
+    }
+
+    @media screen and (max-width: 768px) {
+        .navbar { justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 100%; overflow-x: auto; padding: 10px 0; }
+        .navbar a { font-size: 16px; }
+        .logo-container { height: 80vh; }
+        .top-text, .bottom-text { font-size: 0.9rem; }
+        .bottom-text { white-space: nowrap; bottom: 50px; }
+        .top-text { top: 50px; }
+        .blue-light {
+            animation: bluePulseMobile 12s infinite ease-in-out;
+        }
+        @keyframes bluePulseMobile {
+            0% {
+                box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+            }
+            20% {
+                box-shadow: 0 0 300px 150px rgba(0, 0, 139, 1);
+            }
+            50% {
+                box-shadow: 0 0 300px 150px rgba(0, 0, 139, 1);
+            }
+            80% {
+                box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+            }
+            100% {
+                box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
+            }
+        }
+
+        /* Mobile adjustments for gallery */
+        .gallery-grid {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 5px;
+        }
+
+        .pagination button {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="particles"></div>
+    <div class="blue-light"></div>
+
+    <nav class="navbar">
+        <a href="about.html">ABOUT</a>
+        <a href="support.html">SUPPORT</a>
+    </nav>
+
+    <main>
+        <section class="title-section">
+            <div class="logo-container">
+                <div class="top-text">The Angels</div>
+            </div>
+        </section>
+        <section class="gallery-section">
+            <div class="gallery-grid" id="galleryGrid"></div>
+            <div class="pagination">
+                <button id="prevBtn">&larr;</button>
+                <button id="nextBtn">&rarr;</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for full screen image -->
+    <div class="modal" id="imageModal">
+        <img id="modalImage" src="" alt="Full screen image">
+    </div>
+
+    <script>
+        // Particles script (unchanged)
+        const particleContainer = document.querySelector('.particles');
+        const baseCount = 50;
+        const densityFactor = window.innerWidth / 10;
+        const particleCount = Math.floor(baseCount + densityFactor);
+
+        for (let i = 0; i < particleCount; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const isDesktop = window.innerWidth > 768;
+            const size = isDesktop ? Math.random() * 5 + 3 : Math.random() * 3 + 1; // Larger particles on desktop
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+
+            // Random horizontal start position
+            const startX = Math.random() * window.innerWidth;
+            p.style.left = startX + 'px';
+            p.style.top = window.innerHeight + 'px'; // start at bottom
+            p.style.opacity = Math.random() * 0.5 + 0.3;
+
+            // Animate particle from bottom to top
+            const endY = -50 - Math.random() * 100; // off-screen top
+            const duration = Math.random() * 5000 + 5000;
+
+            p.animate([
+                { transform: `translateY(0px)`, opacity: p.style.opacity },
+                { transform: `translateY(${endY - window.innerHeight}px)`, opacity: 0 }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                easing: 'linear',
+                delay: Math.random() * 3000
+            });
+
+            particleContainer.appendChild(p);
+        }
+
+        // Gallery script
+        const images = [];
+        for (let i = 1; i <= 73; i++) {
+            images.push(`ang${i}.png`);
+        }
+
+        const itemsPerPage = 20; // Chosen to balance load; 20 tiles per page to avoid lag on most devices
+        let currentPage = 0;
+
+        const galleryGrid = document.getElementById('galleryGrid');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+
+        function renderPage(page) {
+            galleryGrid.innerHTML = '';
+            const start = page * itemsPerPage;
+            const end = Math.min(start + itemsPerPage, images.length);
+
+            for (let i = start; i < end; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'gallery-tile';
+
+                const img = document.createElement('img');
+                img.src = images[i];
+                img.alt = `Angel ${i + 1}`;
+
+                tile.appendChild(img);
+                galleryGrid.appendChild(tile);
+
+                tile.addEventListener('click', () => {
+                    modalImage.src = images[i];
+                    modal.style.display = 'flex';
+                });
+            }
+
+            prevBtn.disabled = page === 0;
+            nextBtn.disabled = end === images.length;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                renderPage(currentPage);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage * itemsPerPage + itemsPerPage < images.length) {
+                currentPage++;
+                renderPage(currentPage);
+            }
+        });
+
+        modal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Initial render
+        renderPage(currentPage);
+    </script>
+</body>
+</html>
