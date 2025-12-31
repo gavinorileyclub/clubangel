@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="preload" href="/assets/PoiretOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <style>
     @font-face {
@@ -13,7 +12,6 @@
         font-style: normal;
         font-display: swap;
     }
-
     * {
         margin: 0;
         padding: 0;
@@ -21,7 +19,6 @@
         font-family: 'Poiret', Arial, sans-serif;
         cursor: url(''), auto;
     }
-
     body {
         position: relative;
         min-height: 100vh;
@@ -29,7 +26,6 @@
         overflow: hidden;
         background: #000000; /* pure black background */
     }
-
     .particles {
         position: fixed;
         top: 0;
@@ -40,14 +36,12 @@
         overflow: hidden;
         z-index: -1;
     }
-
     .particle {
         position: absolute;
         border-radius: 50%;
         background: rgba(0,0,255,0.5);
         box-shadow: 0 0 8px rgba(0,0,255,0.8);
     }
-
     .navbar {
         position: fixed;
         top: 0;
@@ -60,33 +54,28 @@
         gap: 48px;
         z-index: 100;
     }
-
     .navbar a {
         color: #fff;
         text-decoration: none;
         font-size: 26px;
         text-shadow: 1px 1px 2px black;
     }
-
     .navbar a:hover { color: #ddd; }
-
     .title-section {
         position: relative;
         width: 100%;
         margin-top: 60px;
         text-align: center;
     }
-
     .logo-container {
         position: relative;
         width: 100%;
         height: 90vh;
-        background-image: url('https://gavinoriley.github.io/assets/clubangelweblogo.png');
+        background-image: url('https://gavinoriley.github.io/assets/smearclub.jpg');
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
     }
-
     .top-text,
     .bottom-text {
         position: absolute;
@@ -99,10 +88,8 @@
         text-align: center;
         font-family: 'Poiret', Arial, sans-serif;
     }
-
     .top-text { top: 0; }
     .bottom-text { bottom: 0; max-width: 90%; line-height: 1.2; }
-
     .blue-light {
         position: fixed;
         top: 50%;
@@ -113,7 +100,6 @@
         z-index: -1; /* Place behind content but above background */
         animation: bluePulse 10s infinite ease-in-out;
     }
-
     @keyframes bluePulse {
         0% {
             box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
@@ -131,7 +117,6 @@
             box-shadow: 0 0 20px 10px rgba(0, 0, 139, 0);
         }
     }
-
     @media screen and (max-width: 768px) {
         .navbar { justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 100%; overflow-x: auto; padding: 10px 0; }
         .navbar a { font-size: 16px; }
@@ -165,13 +150,11 @@
 <body>
     <div class="particles"></div>
     <div class="blue-light"></div>
-
     <nav class="navbar">
         <a href="about.html">ABOUT</a>
         <a href="support.html">SUPPORT</a>
         <a href="theangels.html">THE ANGELS</a>
     </nav>
-
     <main>
         <section class="title-section">
             <div class="logo-container">
@@ -180,13 +163,11 @@
             </div>
         </section>
     </main>
-
     <script>
         const particleContainer = document.querySelector('.particles');
         const baseCount = 50;
         const densityFactor = window.innerWidth / 10;
         const particleCount = Math.floor(baseCount + densityFactor);
-
         for (let i = 0; i < particleCount; i++) {
             const p = document.createElement('div');
             p.className = 'particle';
@@ -194,17 +175,14 @@
             const size = isDesktop ? Math.random() * 5 + 3 : Math.random() * 3 + 1; // Larger particles on desktop
             p.style.width = size + 'px';
             p.style.height = size + 'px';
-
             // Random horizontal start position
             const startX = Math.random() * window.innerWidth;
             p.style.left = startX + 'px';
             p.style.top = window.innerHeight + 'px'; // start at bottom
             p.style.opacity = Math.random() * 0.5 + 0.3;
-
             // Animate particle from bottom to top
             const endY = -50 - Math.random() * 100; // off-screen top
             const duration = Math.random() * 5000 + 5000;
-
             p.animate([
                 { transform: `translateY(0px)`, opacity: p.style.opacity },
                 { transform: `translateY(${endY - window.innerHeight}px)`, opacity: 0 }
@@ -214,7 +192,6 @@
                 easing: 'linear',
                 delay: Math.random() * 3000
             });
-
             particleContainer.appendChild(p);
         }
     </script>
